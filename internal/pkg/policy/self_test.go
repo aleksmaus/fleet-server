@@ -11,10 +11,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/elastic/fleet-server/v7/internal/pkg/config"
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/elastic/fleet-server/v7/internal/pkg/config"
 
 	"github.com/elastic/elastic-agent-client/v7/pkg/proto"
 	"github.com/gofrs/uuid"

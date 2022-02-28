@@ -52,10 +52,10 @@ type Bulk interface {
 	MDelete(ctx context.Context, ops []MultiOp, opts ...Opt) ([]BulkIndexerResponseItem, error)
 
 	// APIKey operations
-	ApiKeyCreate(ctx context.Context, name, ttl string, roles []byte, meta interface{}) (*ApiKey, error)
-	ApiKeyRead(ctx context.Context, id string) (*ApiKeyMetadata, error)
-	ApiKeyAuth(ctx context.Context, key ApiKey) (*SecurityInfo, error)
-	ApiKeyInvalidate(ctx context.Context, ids ...string) error
+	APIKeyCreate(ctx context.Context, name, ttl string, roles []byte, meta interface{}) (*ApiKey, error)
+	APIKeyRead(ctx context.Context, id string) (*ApiKeyMetadata, error)
+	APIKeyAuth(ctx context.Context, key ApiKey) (*SecurityInfo, error)
+	APIKeyInvalidate(ctx context.Context, ids ...string) error
 
 	// Accessor used to talk to elastic search direcly bypassing bulk engine
 	Client() *elasticsearch.Client

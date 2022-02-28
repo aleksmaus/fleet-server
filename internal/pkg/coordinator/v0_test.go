@@ -9,10 +9,11 @@ package coordinator
 
 import (
 	"context"
-	"github.com/elastic/fleet-server/v7/internal/pkg/model"
-	"github.com/gofrs/uuid"
 	"testing"
 	"time"
+
+	"github.com/elastic/fleet-server/v7/internal/pkg/model"
+	"github.com/gofrs/uuid"
 )
 
 func TestCoordinatorZero(t *testing.T) {

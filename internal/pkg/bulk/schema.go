@@ -7,6 +7,7 @@ package bulk
 import (
 	"encoding/json"
 	"errors"
+
 	"github.com/elastic/fleet-server/v7/internal/pkg/es"
 )
 

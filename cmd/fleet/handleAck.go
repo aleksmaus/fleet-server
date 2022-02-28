@@ -272,7 +272,7 @@ func (ack *AckT) handlePolicyChange(ctx context.Context, zlog zerolog.Logger, ag
 			ids[i] = agent.DefaultApiKeyHistory[i].Id
 		}
 		log.Info().Strs("ids", ids).Msg("Invalidate old API keys")
-		if err := ack.bulk.ApiKeyInvalidate(ctx, ids...); err != nil {
+		if err := ack.bulk.APIKeyInvalidate(ctx, ids...); err != nil {
 			log.Info().Err(err).Strs("ids", ids).Msg("Failed to invalidate API keys")
 		}
 	}
@@ -306,7 +306,7 @@ func (ack *AckT) handleUnenroll(ctx context.Context, zlog zerolog.Logger, agent 
 	if len(apiKeys) > 0 {
 		zlog = zlog.With().Strs(LogApiKeyId, apiKeys).Logger()
 
-		if err := ack.bulk.ApiKeyInvalidate(ctx, apiKeys...); err != nil {
+		if err := ack.bulk.APIKeyInvalidate(ctx, apiKeys...); err != nil {
 			return errors.Wrap(err, "handleUnenroll invalidate apikey")
 		}
 	}

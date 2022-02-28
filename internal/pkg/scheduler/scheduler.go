@@ -6,10 +6,10 @@ package scheduler
 
 import (
 	"context"
+	"crypto/rand"
 	"errors"
+	"math/big"
 	"time"
-
-	"math/rand"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -37,7 +37,6 @@ type Scheduler struct {
 	splayPercent  int
 	firstRunDelay time.Duration // Interval to run the scheduled function for the first time since the scheduler started, splayed as well.
 
-	rand      *rand.Rand
 	schedules []Schedule
 }
 
@@ -63,7 +62,6 @@ func New(schedules []Schedule, opts ...OptFunc) (*Scheduler, error) {
 		log:           log.With().Str("ctx", "elasticsearch CG scheduler").Logger(),
 		splayPercent:  defaultSplayPercent,
 		firstRunDelay: defaultFirstRunDelay,
-		rand:          rand.New(rand.NewSource(time.Now().UnixNano())),
 		schedules:     schedules,
 	}
 
@@ -107,8 +105,14 @@ func (s *Scheduler) getRunScheduleFunc(ctx context.Context, schedule Schedule) f
 }
 
 func (s *Scheduler) intervalWithSplay(interval time.Duration) time.Duration {
-	percent := 100 - s.splayPercent + s.rand.Intn(2*s.splayPercent+1)
-	return time.Duration(int64(interval) / int64(100.0) * int64(percent))
+
+	percent := int64(100 - s.splayPercent)
+	r, err := rand.Int(rand.Reader, big.NewInt(int64(2*s.splayPercent+1)))
+	if err == nil {
+		percent += r.Int64()
+	}
+
+	return time.Duration(int64(interval) / int64(100.0) * percent)
 }
 
 func runSchedule(ctx context.Context, log zerolog.Logger, schedule Schedule) {

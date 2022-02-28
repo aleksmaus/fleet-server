@@ -43,7 +43,7 @@ func authApiKey(r *http.Request, bulker bulk.Bulk, c cache.Cache) (*apikey.ApiKe
 
 	start := time.Now()
 
-	info, err := bulker.ApiKeyAuth(r.Context(), *key)
+	info, err := bulker.APIKeyAuth(r.Context(), *key)
 
 	if err != nil {
 		log.Info().

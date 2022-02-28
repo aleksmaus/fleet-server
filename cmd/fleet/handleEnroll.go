@@ -292,13 +292,13 @@ func invalidateApiKey(ctx context.Context, zlog zerolog.Logger, bulker bulk.Bulk
 LOOP:
 	for {
 
-		_, err := bulker.ApiKeyRead(ctx, apikeyId)
+		_, err := bulker.APIKeyRead(ctx, apikeyId)
 
 		switch {
 		case err == nil:
 			break LOOP
 		case !errors.Is(err, apikey.ErrApiKeyNotFound):
-			zlog.Error().Err(err).Msg("Fail ApiKeyRead")
+			zlog.Error().Err(err).Msg("Fail APIKeyRead")
 			return err
 		case time.Since(start) > time.Minute:
 			err := errors.New("Apikey index failed to refresh")
@@ -317,7 +317,7 @@ LOOP:
 		}
 	}
 
-	if err := bulker.ApiKeyInvalidate(ctx, apikeyId); err != nil {
+	if err := bulker.APIKeyInvalidate(ctx, apikeyId); err != nil {
 		zlog.Error().Err(err).Msg("fail invalidate apiKey")
 		return err
 	}
@@ -421,7 +421,7 @@ func createFleetAgent(ctx context.Context, bulker bulk.Bulk, id string, agent mo
 }
 
 func generateAccessApiKey(ctx context.Context, bulk bulk.Bulk, agentId string) (*apikey.ApiKey, error) {
-	return bulk.ApiKeyCreate(
+	return bulk.APIKeyCreate(
 		ctx,
 		agentId,
 		"",
@@ -432,7 +432,7 @@ func generateAccessApiKey(ctx context.Context, bulk bulk.Bulk, agentId string) (
 
 func generateOutputApiKey(ctx context.Context, bulk bulk.Bulk, agentId, outputName string, roles []byte) (*apikey.ApiKey, error) {
 	name := fmt.Sprintf("%s:%s", agentId, outputName)
-	return bulk.ApiKeyCreate(
+	return bulk.APIKeyCreate(
 		ctx,
 		name,
 		"",

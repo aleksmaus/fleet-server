@@ -37,7 +37,7 @@ func CreateDatastream(ctx context.Context, cli *elasticsearch.Client, name strin
 	var r AckResponse
 	err = json.NewDecoder(res.Body).Decode(&r)
 	if err != nil {
-		return fmt.Errorf("failed to parse create datastream response: %v, err: %v", name, err)
+		return fmt.Errorf("failed to parse create datastream response: %v, err: %w", name, err)
 	}
 	if !r.Acknowledged {
 		return fmt.Errorf("failed to receive acknowledgment for create datastream request: %v", name)

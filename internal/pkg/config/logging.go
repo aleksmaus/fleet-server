@@ -5,9 +5,10 @@
 package config
 
 import (
-	"github.com/rs/zerolog"
 	"os"
 	"time"
+
+	"github.com/rs/zerolog"
 )
 
 // LoggingFiles configuration for the logging file output.

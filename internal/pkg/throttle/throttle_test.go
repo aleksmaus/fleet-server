@@ -5,11 +5,12 @@
 package throttle
 
 import (
-	"github.com/rs/zerolog"
-	"math/rand"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/Pallinder/go-randomdata"
+	"github.com/rs/zerolog"
 )
 
 func disableTraceLogging() func() {
@@ -28,7 +29,7 @@ func TestThrottleZero(t *testing.T) {
 	// but still cannot acquire existing that has not timed out
 	throttle := NewThrottle(0)
 
-	N := rand.Intn(64) + 10
+	N := randomdata.Number(0, 64) + 10
 
 	var tokens []*Token
 	for i := 0; i < N; i++ {
@@ -42,7 +43,7 @@ func TestThrottleZero(t *testing.T) {
 		}
 		tokens = append(tokens, token1)
 
-		// Second acquire should fail because we have not released the orginal token,
+		// Second acquire should fail because we have not released the original token,
 		// or possibly if i == N-1 we could max parallel
 		token2 := throttle.Acquire(key, time.Hour)
 		if token2 != nil {
@@ -55,7 +56,7 @@ func TestThrottleZero(t *testing.T) {
 
 		key := strconv.Itoa(i)
 
-		// Acquire should fail because we have not released the orginal token,
+		// Acquire should fail because we have not released the original token,
 		token := throttle.Acquire(key, time.Hour)
 		if token != nil {
 			t.Error("Expected acquire to fail on conflict")
@@ -110,7 +111,7 @@ func TestThrottleN(t *testing.T) {
 			}
 			tokens = append(tokens, token1)
 
-			// Second acquire should fail because we have not released the orginal token,
+			// Second acquire should fail because we have not released the original token,
 			// or possibly if i == N-1 we could max parallel
 			token2 := throttle.Acquire(key, time.Hour)
 			if token2 != nil {
@@ -119,7 +120,7 @@ func TestThrottleN(t *testing.T) {
 		}
 
 		// Any subsequent request should fail because at max
-		try := rand.Intn(64) + 1
+		try := randomdata.Number(0, 64) + 1
 		for i := 0; i < try; i++ {
 
 			key := strconv.Itoa(N + i)
@@ -166,7 +167,7 @@ func TestThrottleExpireIdentity(t *testing.T) {
 
 	throttle := NewThrottle(1)
 
-	key := "xxx"
+	key := "xxxx"
 	token := throttle.Acquire(key, time.Second)
 
 	// Should *NOT* be able to re-acquire until TTL
@@ -180,7 +181,7 @@ func TestThrottleExpireIdentity(t *testing.T) {
 	// Should be able to re-acquire on expiration
 	token3 := throttle.Acquire(key, time.Hour)
 	if token3 == nil {
-		t.Error("Expected third aquire to succeed")
+		t.Fatal("Expected third acquire to succeed")
 	}
 
 	// Original token should fail release
@@ -218,7 +219,7 @@ func TestThrottleExpireAtMax(t *testing.T) {
 	// Should be able acquire second after timeout
 	token2 = throttle.Acquire(key2, time.Hour)
 	if token2 == nil {
-		t.Error("Expected third aquire to succeed")
+		t.Fatal("Expected third acquire to succeed")
 	}
 
 	// Original token should fail release

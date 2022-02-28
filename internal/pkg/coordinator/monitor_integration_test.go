@@ -153,7 +153,7 @@ func TestMonitorUnenroller(t *testing.T) {
 
 	// create apikeys that should be invalidated
 	agentId := uuid.Must(uuid.NewV4()).String()
-	accessKey, err := bulker.ApiKeyCreate(
+	accessKey, err := bulker.APIKeyCreate(
 		ctx,
 		agentId,
 		"",
@@ -161,7 +161,7 @@ func TestMonitorUnenroller(t *testing.T) {
 		apikey.NewMetadata(agentId, apikey.TypeAccess),
 	)
 	require.NoError(t, err)
-	outputKey, err := bulker.ApiKeyCreate(
+	outputKey, err := bulker.APIKeyCreate(
 		ctx,
 		agentId,
 		"",
@@ -227,9 +227,9 @@ func TestMonitorUnenroller(t *testing.T) {
 	assert.Len(t, pm.(*monitorT).policiesCanceller, 1)
 
 	// should error as they are now invalidated
-	_, err = bulker.ApiKeyAuth(bulkCtx, *accessKey)
+	_, err = bulker.APIKeyAuth(bulkCtx, *accessKey)
 	assert.Error(t, err)
-	_, err = bulker.ApiKeyAuth(bulkCtx, *outputKey)
+	_, err = bulker.APIKeyAuth(bulkCtx, *outputKey)
 	assert.Error(t, err)
 }
 
@@ -299,7 +299,7 @@ func TestMonitorUnenrollerSetAndClear(t *testing.T) {
 
 	// create apikeys that should be invalidated
 	agentId := uuid.Must(uuid.NewV4()).String()
-	accessKey, err := bulker.ApiKeyCreate(
+	accessKey, err := bulker.APIKeyCreate(
 		ctx,
 		agentId,
 		"",
@@ -307,7 +307,7 @@ func TestMonitorUnenrollerSetAndClear(t *testing.T) {
 		apikey.NewMetadata(agentId, apikey.TypeAccess),
 	)
 	require.NoError(t, err)
-	outputKey, err := bulker.ApiKeyCreate(
+	outputKey, err := bulker.APIKeyCreate(
 		ctx,
 		agentId,
 		"",

@@ -70,19 +70,19 @@ func (m MockBulk) Client() *elasticsearch.Client {
 	return nil
 }
 
-func (m MockBulk) ApiKeyCreate(ctx context.Context, name, ttl string, roles []byte, meta interface{}) (*bulk.ApiKey, error) {
+func (m MockBulk) APIKeyCreate(ctx context.Context, name, ttl string, roles []byte, meta interface{}) (*bulk.ApiKey, error) {
 	return nil, nil
 }
 
-func (m MockBulk) ApiKeyRead(ctx context.Context, id string) (*bulk.ApiKeyMetadata, error) {
+func (m MockBulk) APIKeyRead(ctx context.Context, id string) (*bulk.ApiKeyMetadata, error) {
 	return nil, nil
 }
 
-func (m MockBulk) ApiKeyAuth(ctx context.Context, key bulk.ApiKey) (*bulk.SecurityInfo, error) {
+func (m MockBulk) APIKeyAuth(ctx context.Context, key bulk.ApiKey) (*bulk.SecurityInfo, error) {
 	return nil, nil
 }
 
-func (m MockBulk) ApiKeyInvalidate(ctx context.Context, ids ...string) error {
+func (m MockBulk) APIKeyInvalidate(ctx context.Context, ids ...string) error {
 	return nil
 }
 

@@ -523,7 +523,7 @@ func unenrollAgent(ctx context.Context, zlog zerolog.Logger, bulker bulk.Bulk, a
 	zlog.Info().Msg("unenrollAgent due to unenroll timeout")
 
 	if len(apiKeys) > 0 {
-		err = bulker.ApiKeyInvalidate(ctx, apiKeys...)
+		err = bulker.APIKeyInvalidate(ctx, apiKeys...)
 		if err != nil {
 			zlog.Error().Err(err).Msg("Fail apiKey invalidate")
 			return err

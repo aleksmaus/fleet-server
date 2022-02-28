@@ -7,9 +7,10 @@ package limit
 import (
 	"github.com/elastic/fleet-server/v7/internal/pkg/logger"
 
-	"github.com/rs/zerolog/log"
 	"net"
 	"sync"
+
+	"github.com/rs/zerolog/log"
 )
 
 // Derived from netutil.LimitListener but works slightly differently.

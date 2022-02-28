@@ -5,7 +5,8 @@
 package rnd
 
 import (
-	"math/rand"
+	"crypto/rand"
+	"math/big"
 	"time"
 )
 
@@ -13,32 +14,32 @@ const (
 	charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )
 
-// Rnd Sufficiently random generator for testing
-type Rnd struct {
-	r *rand.Rand
-}
-
-func New() *Rnd {
-	return &Rnd{
-		r: rand.New(rand.NewSource(time.Now().Unix())),
+func Int(min, max int) (int, error) {
+	r, err := rand.Int(rand.Reader, big.NewInt(int64(max-min)))
+	if err != nil {
+		return 0, err
 	}
+	return int(r.Int64() + int64(min)), nil
 }
 
-func (r *Rnd) Int(min, max int) int {
-	return r.r.Intn(max-min) + min
+func Bool() (bool, error) {
+	n, err := Int(0, 2)
+	if err != nil {
+		return false, err
+	}
+	return n != 0, nil
 }
 
-func (r *Rnd) Bool() bool {
-	n := r.r.Intn(2)
-	return n != 0
-}
-
-func (r *Rnd) String(sz int) string {
+func String(sz int) (string, error) {
 	b := make([]byte, sz)
 	for i := range b {
-		b[i] = charset[r.r.Intn(len(charset))]
+		n, err := Int(0, len(charset))
+		if err != nil {
+			return "", err
+		}
+		b[i] = charset[n]
 	}
-	return string(b)
+	return string(b), nil
 }
 
 type OffsetDirection int
@@ -52,13 +53,16 @@ func (d OffsetDirection) String() string {
 	return []string{"Before", "After"}[d]
 }
 
-func (r *Rnd) Time(tm time.Time, min, max int, units time.Duration, direction OffsetDirection) time.Time {
-	n := r.Int(min, max)
+func Time(tm time.Time, min, max int, units time.Duration, direction OffsetDirection) (time.Time, error) {
+	n, err := Int(min, max)
+	if err != nil {
+		return time.Time{}, err
+	}
 
 	dur := time.Duration(n) * units
 
 	if direction == TimeBefore {
-		return tm.Add(-dur)
+		return tm.Add(-dur), nil
 	}
-	return tm.Add(dur)
+	return tm.Add(dur), nil
 }

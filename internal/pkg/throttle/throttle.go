@@ -5,9 +5,10 @@
 package throttle
 
 import (
-	"github.com/rs/zerolog/log"
 	"sync"
 	"time"
+
+	"github.com/rs/zerolog/log"
 )
 
 type Token struct {

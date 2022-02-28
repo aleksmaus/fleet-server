@@ -62,7 +62,7 @@ func TestScheduler(t *testing.T) {
 	})
 
 	g.Go(func() error {
-		wait.WithContext(ctx, 500*time.Millisecond)
+		_ = wait.WithContext(ctx, 500*time.Millisecond)
 		// return some error here to cause exit error group wait
 		return errTest
 	})

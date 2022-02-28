@@ -39,18 +39,12 @@ func (e *ClientError) Error() string {
 	return res
 }
 
-func (e *ClientError) Unwrap() error {
-	return e.err
-}
-
 type errorResponse struct {
 	Error struct {
 		Type   string `json:"type"`
 		Reason string `json:"reason"`
 	} `json:"error,omitempty"`
 	Status int `json:"status,omitempty"`
-
-	err error // Wrapped error
 }
 
 func checkResponseError(res *esapi.Response) error {

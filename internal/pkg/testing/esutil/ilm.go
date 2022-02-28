@@ -166,7 +166,7 @@ func GetILMPolicyName(name string) string {
 }
 
 func nameWithSuffix(name, suffix string) string {
-	return name + "-" + ilmPolicySuffix
+	return name + "-" + suffix
 }
 
 func renderILMPolicy(rolloverSize, rolloverAge, deleteAge int) (s string, err error) {

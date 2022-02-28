@@ -7,8 +7,9 @@ package policy
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/elastic/fleet-server/v7/internal/pkg/model"
 	"testing"
+
+	"github.com/elastic/fleet-server/v7/internal/pkg/model"
 )
 
 const testPolicy = `
